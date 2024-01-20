@@ -1,8 +1,10 @@
-﻿namespace BloodseekerSDK
+﻿using System.Threading.Tasks;
+
+namespace BloodseekerSDK
 {
     public interface IBloodseekerPlatform
     {
         bool AddTrail(ITrail trail);
-        Report Seek();
+        Task<Report> Seek();
     }
 }

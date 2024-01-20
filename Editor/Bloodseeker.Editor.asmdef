@@ -1,0 +1,18 @@
+{
+    "name": "Bloodseeker.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:db07a9c5cf174b3d90661ed0919f8824"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,8 +1,10 @@
-﻿namespace BloodseekerSDK
+﻿using System.Threading.Tasks;
+
+namespace BloodseekerSDK
 {
     public class StubPlatform : IBloodseekerPlatform
     {
-        private static readonly Report _report = new Report(false, null, null);
+        private static readonly Report _report = Report.Ok();
 
         public bool AddTrail(ITrail trail)
         {
@@ -10,9 +12,9 @@
             return true;
         }
 
-        public Report Seek()
+        public Task<Report> Seek()
         {
-            return _report;
+            return Task.FromResult(_report);
         }
     }
 }

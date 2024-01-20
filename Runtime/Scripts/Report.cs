@@ -1,16 +1,41 @@
-﻿namespace BloodseekerSDK
+﻿using System;
+
+namespace BloodseekerSDK
 {
     public struct Report
     {
-        public bool success;
-        public string[] results;
-        public string[] exceptions;
+        public Result result;
+        public string[] evidence;
+        public string[] errors;
 
-        public Report(bool success, string[] results, string[] exceptions)
+        public Report(Result result, string[] evidence, string[] errors)
         {
-            this.success = success;
-            this.results = results;
-            this.exceptions = exceptions;
+            this.result = result;
+            this.evidence = evidence;
+            this.errors = errors;
+        }
+
+        public static Report NotInitialized()
+        {
+            return NotInitialized(null);
+        }
+
+        public static Report NotInitialized(Exception exception)
+        {
+            var errors = exception != null ? new string[] { exception.ToString() } : null;
+            return new Report(Result.NotInitialized, null, errors);
+        }
+
+        public static Report Ok()
+        {
+            return new Report(Result.Ok, null, null);
+        }
+
+        public enum Result
+        {
+            NotInitialized = 0,
+            Found = 1,
+            Ok = 2,
         }
     }
 }

@@ -7,14 +7,14 @@ namespace BloodseekerSDK.Android
     {
         private string[] _libraryNames;
 
-        public AndroidLibraryTrail(string[] libraryNames)
+        public AndroidLibraryTrail(params string[] libraryNames)
         {
             this._libraryNames = libraryNames;
         }
 
         public AndroidJavaObject AsJavaObject()
         {
-            return new AndroidJavaObject("com.am1goo.bloodseeker.trails.LibraryTrail", _libraryNames);
+            return new AndroidJavaObject("com.am1goo.bloodseeker.android.trails.LibraryTrail", _libraryNames);
         }
     }
 }

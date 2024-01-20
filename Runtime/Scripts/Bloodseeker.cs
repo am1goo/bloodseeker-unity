@@ -1,32 +1,59 @@
-using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace BloodseekerSDK
 {
-    public static class Bloodseeker
+    public class Bloodseeker
     {
-        private static readonly IBloodseekerPlatform _platform;
+        private IBloodseekerPlatform _platform;
 
-        static Bloodseeker()
+        private Bloodseeker()
         {
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+            _platform = new EditorPlatform();
+#elif UNITY_ANDROID
             _platform = new AndroidPlatform();
 #else
             _platform = new StubPlatform();
 #endif
         }
 
-        public static bool AddTrail(ITrail trail)
+        public static Bloodseeker Create()
         {
-            if (trail == null)
-                return false;
-
-            return _platform.AddTrail(trail);
+            return new Bloodseeker();
         }
 
-        public static Report Seek()
+        public Bloodseeker AddTrail(ITrail trail)
         {
-            return _platform.Seek();
+            if (trail == null)
+                return this;
+
+            _platform.AddTrail(trail);
+            return this;
+        }
+
+        public Task<Report> Seek()
+        {
+           return _platform.Seek();
+        }
+
+        public ReportAsyncOperation SeekAsync()
+        {
+            var task = Seek();
+            return new ReportAsyncOperation(task);
+        }
+
+        public class ReportAsyncOperation : CustomYieldInstruction
+        {
+            public override bool keepWaiting => !_task.IsCompleted;
+
+            public Report report => _task.Result;
+            private Task<Report> _task;
+
+            public ReportAsyncOperation(Task<Report> task)
+            {
+                this._task = task;
+            }
         }
     }
 }
