@@ -15,6 +15,7 @@ IEnumerator Start()
     .AddTrail(new BloodseekerSDK.Android.AndroidLibraryTrail("SomeLibrary")) //it will be converted to libSomeLibrary.so
     .AddTrail(new BloodseekerSDK.Android.AndroidClassNameTrail("xyz.abc.CheatActivator")) //any java class can be found here
     .AddTrail(new BloodseekerSDK.Android.AndroidPackageNameTrail("xyz.abc")) //you can use package name instead of class name (but it's much slower)
+    .AddTrail(new BloodseekerSDK.Android.AndroidPathInApkTrail("META-INF/MANIFEST.MF")) //any files in base apk can be found here
     .SeekAsync();
 
     yield return op;
