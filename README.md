@@ -1,4 +1,4 @@
-# bloodseeker-unity
+# Bloodseeker for Unity
 Easy-as-dumb toolkit to prevent any malicious injections in your `Android` apps \
 Beware of cheaters!
 
