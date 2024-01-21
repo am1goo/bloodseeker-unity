@@ -8,14 +8,17 @@ The latest version can be installed via [package manager](https://docs.unity3d.c
 
 #### How to use
 ```csharp
+using BloodseekerSDK;
+using BloodseekerSDK.Android;
+
 IEnumerator Start()
 {
-    var op = BloodseekerSDK.Bloodseeker
+    var op = Bloodseeker
     .Create()
-    .AddTrail(new BloodseekerSDK.Android.AndroidLibraryTrail("SomeLibrary")) //it will be converted to libSomeLibrary.so
-    .AddTrail(new BloodseekerSDK.Android.AndroidClassNameTrail("xyz.abc.CheatActivator")) //any java class can be found here
-    .AddTrail(new BloodseekerSDK.Android.AndroidPackageNameTrail("xyz.abc")) //you can use package name instead of class name (but it's much slower)
-    .AddTrail(new BloodseekerSDK.Android.AndroidPathInApkTrail("META-INF/MANIFEST.MF")) //any files in base apk can be found here
+    .AddTrail(new LibraryTrail("SomeLibrary")) //it will be converted to libSomeLibrary.so
+    .AddTrail(new ClassNameTrail("xyz.abc.CheatActivator")) //any java class can be found here
+    .AddTrail(new PackageNameTrail("xyz.abc")) //you can use package name instead of class name (but it's much slower)
+    .AddTrail(new PathInApkTrail("META-INF/MANIFEST.MF")) //any files in base apk can be found here
     .SeekAsync();
 
     yield return op;
@@ -23,15 +26,15 @@ IEnumerator Start()
     var report = op.report;
     switch (report.result)
     {
-        case BloodseekerSDK.Report.Result.NotInitialized:
+        case Report.Result.NotInitialized:
             Debug.LogError("SDK not initialized");
             break;
 
-        case BloodseekerSDK.Report.Result.Found:
+        case Report.Result.Found:
             Debug.LogError($"Found strange code: {string.Join(";", report.evidence)}");
             break;
 
-        case BloodseekerSDK.Report.Result.Ok:
+        case Report.Result.Ok:
             Debug.Log("Everything okay, go ahead!");
             break;
     }
