@@ -50,18 +50,38 @@ namespace BloodseekerSDK
                 return Report.NotInitialized();
 
             var trls = new List<AndroidJavaObject>();
+            var exceptions = new List<Exception>();
             foreach (var trail in _trails)
             {
-                var trl = trail.AsJavaObject();
-                trls.Add(trl);
-
-                var added = sdk.Call<bool>("addTrail", trl);
-#if DEBUG
-                if (!added)
+                AndroidJavaObject trl;
+                try
                 {
-                    Debug.LogError($"Seek: {trail.GetType()} doens't added");
+                    trl = trail.AsJavaObject();
                 }
-#endif
+                catch (Exception ex)
+                {
+                    exceptions.Add(ex);
+                    continue;
+                }
+
+                if (trl == null)
+                    continue;
+
+                bool added;
+                try
+                {
+                    added = sdk.Call<bool>("addTrail", trl);
+                    if (!added)
+                        exceptions.Add(new Exception($"{trail.GetType()} wasn't added"));
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Add(ex);
+                    trl.Dispose();
+                    continue;
+                }
+
+                trls.Add(trl);
             }
 
             var report = sdk.Call<AndroidJavaObject>("seek");
