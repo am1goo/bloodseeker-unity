@@ -2,7 +2,7 @@
     "name": "com.am1goo.bloodseeker",
     "version": "0.0.2",
     "displayName": "Bloodseeker",
-    "description": "Bloodseeker - crossplatform cheat prevention plugin",
+    "description": "Bloodseeker - easy-as-dumb toolkit to prevent any malicious injections in your Android apps. Beware of cheaters!",
     "unity": "2020.3",
     "license": "GPL-3.0-or-later",
     "licensesUrl": "https://raw.githubusercontent.com/am1goo/bloodseeker-unity/main/LICENSE?token=GHSAT0AAAAAACMRDQHMQMJ4ECX6XJV3I2FCZNKZ3QA",
