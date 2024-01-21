@@ -1,12 +1,12 @@
 {
     "name": "com.am1goo.bloodseeker",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "displayName": "Bloodseeker",
     "description": "Bloodseeker - crossplatform cheat prevention plugin",
     "unity": "2020.3",
     "license": "GPL-3.0-or-later",
     "licensesUrl": "https://raw.githubusercontent.com/am1goo/bloodseeker-unity/main/LICENSE?token=GHSAT0AAAAAACMRDQHMQMJ4ECX6XJV3I2FCZNKZ3QA",
-    "documentationUrl": "https://github.com/am1goo/unity-plugin-spritesheet-3000/blob/master/README.md",
+    "documentationUrl": "https://github.com/am1goo/bloodseeker-unity/blob/master/README.md",
     "keywords": [
         "anticheat",
         "protection",
