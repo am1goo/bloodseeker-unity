@@ -34,7 +34,7 @@ namespace BloodseekerSDK.Android
                 this.value = value;
             }
 
-            public static Looker UnityActivity()
+            public static Looker UnityPlayerActivity()
             {
                 return new Looker(
                     nodes:      new[] { "application", "activity" },
