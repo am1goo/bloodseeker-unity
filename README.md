@@ -14,11 +14,25 @@ using BloodseekerSDK.Android;
 IEnumerator Start()
 {
     var op = Bloodseeker
+    //create instance of Bloodseeker
     .Create()
-    .AddTrail(new LibraryTrail("SomeLibrary")) //it will be converted to libSomeLibrary.so
-    .AddTrail(new ClassNameTrail("xyz.abc.CheatActivator")) //any java class can be found here
-    .AddTrail(new PackageNameTrail("xyz.abc")) //you can use package name instead of class name (but it's much slower)
-    .AddTrail(new PathInApkTrail("META-INF/MANIFEST.MF")) //any files in base apk can be found here
+     //it will be converted to libSomeLibrary.so
+    .AddTrail(new LibraryTrail("SomeLibrary"))
+    //any java class can be found here
+    .AddTrail(new ClassNameTrail("xyz.abc.CheatActivator"))
+    //you can use package name instead of class name (but it's much slower)
+    .AddTrail(new PackageNameTrail("xyz.abc"))
+    //any files in base apk can be found here
+    .AddTrail(new PathInApkTrail("META-INF/MANIFEST.MF"))
+    //check node "application/activity" contains "android:name" with value "com.unity3d.player.UnityPlayerActivity"
+    .AddTrail(new AndroidManifestXmlTrail(AndroidManifestXmlTrail.Looker.UnityPlayerActivity()))
+    //check node "application/provider" contains "android:name" with value "com.facebook.internal.FacebookInitProvider"
+    .AddTrail(new AndroidManifestXmlTrail(new AndroidManifestXmlTrail.Looker(
+        nodes:      new string[] { "application", "provider" },
+        attribute:  "android:name",
+        value:      "com.facebook.internal.FacebookInitProvider"
+    )))
+    //start seeking anything in these trails
     .SeekAsync();
 
     yield return op;
