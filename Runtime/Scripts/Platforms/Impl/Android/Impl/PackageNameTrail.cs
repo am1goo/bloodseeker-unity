@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace BloodseekerSDK.Android
 {
-    public sealed class AndroidPackageNameTrail : IAndroidTrail
+    public sealed class PackageNameTrail : IAndroidTrail
     {
         private string[] _packageNames;
 
-        public AndroidPackageNameTrail(params string[] packageNames)
+        public PackageNameTrail(params string[] packageNames)
         {
             this._packageNames = packageNames;
         }
