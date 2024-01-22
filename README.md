@@ -59,9 +59,12 @@ IEnumerator Start()
 }
 ```
 
-#### Requirements
+## Requirements
 - Android Minimal SDK 17 (Jelly Bean MR1)
 
-#### Tested in
+## Tested in
 - Unity 2019.4.x
 - Unity 2020.3.x
+
+## Contribute
+Contribution in any form is very welcome. Bugs, feature requests or feedback can be reported in form of Issues.
