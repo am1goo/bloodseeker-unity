@@ -39,7 +39,7 @@ namespace BloodseekerSDK
             AndroidJavaObject sdk;
             try
             {
-                sdk = new AndroidJavaObject("com.am1goo.bloodseeker.android.Bloodseeker");
+                sdk = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.Bloodseeker^"));
             }
             catch (AndroidJavaException ex)
             {
@@ -70,7 +70,7 @@ namespace BloodseekerSDK
                 bool added;
                 try
                 {
-                    added = sdk.Call<bool>("addTrail", trl);
+                    added = sdk.Call<bool>(new SecureString("^addTrail^"), trl);
                     if (!added)
                         exceptions.Add(new Exception($"{trail.GetType()} wasn't added"));
                 }
@@ -84,10 +84,10 @@ namespace BloodseekerSDK
                 trls.Add(trl);
             }
 
-            var report = sdk.Call<AndroidJavaObject>("seek");
-            var isSuccess = report.Call<bool>("isSuccess");
-            var evidence = report.CallArray("getEvidence");
-            var errors = report.CallArray("getErrors");
+            var report = sdk.Call<AndroidJavaObject>(new SecureString("^seek^"));
+            var isSuccess = report.Call<bool>(new SecureString("^isSuccess^"));
+            var evidence = report.CallArray(new SecureString("^getEvidence^"));
+            var errors = report.CallArray(new SecureString("^getErrors^"));
 
             foreach (var trl in trls)
             {

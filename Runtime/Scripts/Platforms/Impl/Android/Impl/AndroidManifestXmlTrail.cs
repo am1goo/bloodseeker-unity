@@ -17,7 +17,7 @@ namespace BloodseekerSDK.Android
         public AndroidJavaObject AsJavaObject()
         {
             var strs = _lookers.Select(looker => JsonUtility.ToJson(looker)).ToArray();
-            return new AndroidJavaObject("com.am1goo.bloodseeker.android.trails.AndroidManifestXmlTrail", strs);
+            return new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.trails.AndroidManifestXmlTrail^"), strs);
         }
 
         [Serializable]

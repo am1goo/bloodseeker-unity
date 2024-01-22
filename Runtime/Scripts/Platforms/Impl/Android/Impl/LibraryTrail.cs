@@ -14,7 +14,7 @@ namespace BloodseekerSDK.Android
 
         public AndroidJavaObject AsJavaObject()
         {
-            return new AndroidJavaObject("com.am1goo.bloodseeker.android.trails.LibraryTrail", _libraryNames);
+            return new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.trails.LibraryTrail^"), _libraryNames);
         }
     }
 }
