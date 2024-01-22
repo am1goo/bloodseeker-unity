@@ -26,6 +26,12 @@ namespace BloodseekerSDK
             return new Report(Result.NotInitialized, null, errors);
         }
 
+        public static Report UnexpectedError(Exception exception)
+        {
+            var errors = exception != null ? new string[] { exception.ToString() } : null;
+            return new Report(Result.UnexpectedError, null, errors);
+        }
+
         public static Report Ok()
         {
             return new Report(Result.Ok, null, null);
@@ -36,6 +42,7 @@ namespace BloodseekerSDK
             NotInitialized = 0,
             Found = 1,
             Ok = 2,
+            UnexpectedError = 3,
         }
     }
 }

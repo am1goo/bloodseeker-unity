@@ -28,35 +28,54 @@ namespace BloodseekerSDK
             return true;
         }
 
-        public Task<Report> Seek()
+        public async Task<Report> Seek()
         {
-            var report = SeekInternal();
-            return Task.FromResult(report);
-        }
-
-        private Report SeekInternal()
-        {
-            AndroidJavaObject sdk;
             try
             {
-                sdk = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.Bloodseeker^"));
+                return await SeekLowLevel();
+            }
+            catch (Exception ex)
+            {
+                return Report.UnexpectedError(ex);
+            }
+        }
+
+        private async Task<Report> SeekLowLevel()
+        {
+            AndroidJavaObject sdkObj;
+            try
+            {
+                sdkObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.Bloodseeker^"));
             }
             catch (AndroidJavaException ex)
             {
                 return Report.NotInitialized(ex);
             }
 
-            if (sdk.IsNull())
+            if (sdkObj.IsNull())
                 return Report.NotInitialized();
 
-            var trls = new List<AndroidJavaObject>();
+            AndroidJavaObject asyncReportObj;
+            try
+            {
+                asyncReportObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.AsyncReport^"));
+            }
+            catch (AndroidJavaException ex)
+            {
+                return Report.NotInitialized(ex);
+            }
+
+            if (asyncReportObj.IsNull())
+                return Report.NotInitialized();
+
+            var trailsObjs = new List<AndroidJavaObject>();
             var exceptions = new List<Exception>();
             foreach (var trail in _trails)
             {
-                AndroidJavaObject trl;
+                AndroidJavaObject trailObj;
                 try
                 {
-                    trl = trail.AsJavaObject();
+                    trailObj = trail.AsJavaObject();
                 }
                 catch (Exception ex)
                 {
@@ -64,40 +83,71 @@ namespace BloodseekerSDK
                     continue;
                 }
 
-                if (trl == null)
+                if (trailObj == null)
                     continue;
 
                 bool added;
                 try
                 {
-                    added = sdk.Call<bool>(new SecureString("^addTrail^"), trl);
+                    added = sdkObj.Call<bool>(new SecureString("^addTrail^"), trailObj);
                     if (!added)
                         exceptions.Add(new Exception($"{trail.GetType()} wasn't added"));
                 }
                 catch (Exception ex)
                 {
                     exceptions.Add(ex);
-                    trl.Dispose();
+                    trailObj.Dispose();
                     continue;
                 }
 
-                trls.Add(trl);
+                trailsObjs.Add(trailObj);
             }
 
-            var report = sdk.Call<AndroidJavaObject>(new SecureString("^seek^"));
-            var isSuccess = report.Call<bool>(new SecureString("^isSuccess^"));
-            var evidence = report.CallArray(new SecureString("^getEvidence^"));
-            var errors = report.CallArray(new SecureString("^getErrors^"));
+            sdkObj.Call(new SecureString("^seekAsync^"), asyncReportObj);
 
-            foreach (var trl in trls)
+            for (; ; )
             {
-                trl.Dispose();
+                var isDone = asyncReportObj.Call<bool>(new SecureString("^isDone^"));
+                if (isDone)
+                {
+                    break;
+                }
+                else
+                {
+                    await Task.Delay(10);
+                }
             }
-            trls.Clear();
-            sdk.Dispose();
 
-            var result = isSuccess ? Report.Result.Found : Report.Result.Ok;
-            return new Report(result, evidence, errors);
+            var report = default(Report);
+            using (var resultObj = asyncReportObj.Call<AndroidJavaObject>(new SecureString("^getResult^")))
+            {
+                if (resultObj.IsNull())
+                {
+                    var exceptionObj = asyncReportObj.Call<AndroidJavaObject>(new SecureString("^getException^"));
+                    var exceptionStr = exceptionObj.Call<string>(new SecureString("^toString^"));
+                    var exception = new Exception(exceptionStr);
+                    report = Report.UnexpectedError(exception);
+                }
+                else
+                {
+                    var isSuccess = resultObj.Call<bool>(new SecureString("^isSuccess^"));
+                    var evidence = resultObj.CallArray(new SecureString("^getEvidence^"));
+                    var errors = resultObj.CallArray(new SecureString("^getErrors^"));
+
+                    var result = isSuccess ? Report.Result.Found : Report.Result.Ok;
+                    report = new Report(result, evidence, errors);
+                }
+            }
+
+            foreach (var trailObj in trailsObjs)
+            {
+                trailObj.Dispose();
+            }
+            trailsObjs.Clear();
+            asyncReportObj.Dispose();
+            sdkObj.Dispose();
+
+            return report;
         }
     }
 }

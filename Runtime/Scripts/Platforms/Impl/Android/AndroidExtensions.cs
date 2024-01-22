@@ -7,6 +7,9 @@ namespace BloodseekerSDK.Android
     {
         public static bool IsNull(this AndroidJavaObject obj)
         {
+            if (obj == null)
+                return true;
+
             var raw = obj.GetRawObject();
             return raw.ToInt32() == 0;
         }
