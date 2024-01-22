@@ -2,6 +2,10 @@
 Easy-as-dumb toolkit to prevent any malicious injections in your `Android` apps \
 Beware of cheaters!
 
+#### What inside
+- .NET wrapper for Unity
+- [bloodseeker-android](https://github.com/am1goo/bloodseeker-android) implementation as `.aar` library
+
 #### Unity Plugin
 The latest version can be installed via [package manager](https://docs.unity3d.com/Manual/upm-ui-giturl.html) using following git URL: \
 `https://github.com/am1goo/bloodseeker-unity.git`
