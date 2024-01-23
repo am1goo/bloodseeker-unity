@@ -11,6 +11,11 @@ namespace BloodseekerSDK
     {
         private List<IEditorTrail> _trails;
 
+        public void SetUpdateUrl(Uri uri)
+        {
+            //do nothing
+        }
+
         public bool AddTrail(ITrail trail)
         {
             if (!(trail is IEditorTrail androidTrail))

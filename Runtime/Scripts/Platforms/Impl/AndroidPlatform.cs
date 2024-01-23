@@ -9,11 +9,17 @@ namespace BloodseekerSDK
 {
     public class AndroidPlatform : IBloodseekerPlatform
     {
+        private Uri _uri = null;
         private List<IAndroidTrail> _trails = new List<IAndroidTrail>();
 
         public AndroidPlatform()
         {
 
+        }
+
+        public void SetUpdateUrl(Uri uri)
+        {
+            this._uri = uri;
         }
 
         public bool AddTrail(ITrail trail)
@@ -68,8 +74,23 @@ namespace BloodseekerSDK
             if (asyncReportObj.IsNull())
                 return Report.NotInitialized();
 
-            var trailsObjs = new List<AndroidJavaObject>();
             var exceptions = new List<Exception>();
+
+            try
+            {
+                if (_uri != null)
+                {
+                    bool added = sdkObj.Call<bool>(new SecureString("^setUpdateUrl^"), _uri.ToString());
+                    if (!added)
+                        exceptions.Add(new Exception($"update url wasn't sets"));
+                }
+            }
+            catch (Exception ex)
+            {
+                exceptions.Add(ex);
+            }
+
+            var trailsObjs = new List<AndroidJavaObject>();
             foreach (var trail in _trails)
             {
                 AndroidJavaObject trailObj;

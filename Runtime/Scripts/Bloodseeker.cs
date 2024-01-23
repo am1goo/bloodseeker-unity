@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -21,6 +22,18 @@ namespace BloodseekerSDK
         public static Bloodseeker Create()
         {
             return new Bloodseeker();
+        }
+
+        public Bloodseeker SetUpdateUrl(string url)
+        {
+            var uri = new Uri(url);
+            return SetUpdateUrl(uri);
+        }
+
+        public Bloodseeker SetUpdateUrl(Uri uri)
+        {
+            _platform.SetUpdateUrl(uri);
+            return this;
         }
 
         public Bloodseeker AddTrail(ITrail trail)

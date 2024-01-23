@@ -1,10 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace BloodseekerSDK
 {
     public class StubPlatform : IBloodseekerPlatform
     {
         private static readonly Report _report = Report.Ok();
+
+        public void SetUpdateUrl(Uri uri)
+        {
+            //do nothing
+        }
 
         public bool AddTrail(ITrail trail)
         {
