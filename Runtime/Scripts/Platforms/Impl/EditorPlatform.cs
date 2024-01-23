@@ -11,7 +11,7 @@ namespace BloodseekerSDK
     {
         private List<IEditorTrail> _trails;
 
-        public void SetUpdateUrl(Uri uri)
+        public void SetRemoteUpdateConfig(RemoteUpdateConfig config)
         {
             //do nothing
         }

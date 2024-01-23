@@ -24,15 +24,9 @@ namespace BloodseekerSDK
             return new Bloodseeker();
         }
 
-        public Bloodseeker SetUpdateUrl(string url)
+        public Bloodseeker SetRemoteUpdateConfig(RemoteUpdateConfig config)
         {
-            var uri = new Uri(url);
-            return SetUpdateUrl(uri);
-        }
-
-        public Bloodseeker SetUpdateUrl(Uri uri)
-        {
-            _platform.SetUpdateUrl(uri);
+            _platform.SetRemoteUpdateConfig(config);
             return this;
         }
 

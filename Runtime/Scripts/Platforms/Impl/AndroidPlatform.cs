@@ -9,7 +9,7 @@ namespace BloodseekerSDK
 {
     public class AndroidPlatform : IBloodseekerPlatform
     {
-        private Uri _uri = null;
+        private RemoteUpdateConfig _config;
         private List<IAndroidTrail> _trails = new List<IAndroidTrail>();
 
         public AndroidPlatform()
@@ -17,9 +17,9 @@ namespace BloodseekerSDK
 
         }
 
-        public void SetUpdateUrl(Uri uri)
+        public void SetRemoteUpdateConfig(RemoteUpdateConfig config)
         {
-            this._uri = uri;
+            this._config = config;
         }
 
         public bool AddTrail(ITrail trail)
@@ -78,11 +78,17 @@ namespace BloodseekerSDK
 
             try
             {
-                if (_uri != null)
+                if (_config != null)
                 {
-                    bool added = sdkObj.Call<bool>(new SecureString("^setUpdateUrl^"), _uri.ToString());
-                    if (!added)
-                        exceptions.Add(new Exception($"update url wasn't sets"));
+                    using (AndroidJavaObject remoteConfigObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.update.RemoteUpdateConfig^")))
+                    {
+                        remoteConfigObj.Call(new SecureString("^setUrl^"), _config.url);
+                        remoteConfigObj.Call(new SecureString("^setSecretKey^"), _config.secretKey);
+
+                        bool added = sdkObj.Call<bool>(new SecureString("^setRemoteUpdateConfig^"), remoteConfigObj);
+                        if (!added)
+                            exceptions.Add(new Exception($"update url wasn't sets"));
+                    }
                 }
             }
             catch (Exception ex)
