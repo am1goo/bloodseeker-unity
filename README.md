@@ -8,7 +8,7 @@ Beware of cheaters!
 
 #### Unity Plugin
 The latest version can be installed via [package manager](https://docs.unity3d.com/Manual/upm-ui-giturl.html) using following git URL: \
-`https://github.com/am1goo/bloodseeker-unity.git`
+`https://github.com/am1goo/bloodseeker-unity.git#0.1.3`
 
 #### How to use
 ```csharp
@@ -20,6 +20,16 @@ IEnumerator Start()
     var op = Bloodseeker
     //create instance of Bloodseeker
     .Create()
+    //if you want to update trails from your remote server, you should configure it first
+    .SetRemoteUpdateConfig(new RemoteUpdateConfig
+    {
+        //url where sdk have access to file with update
+        url = "https://your.custom.domain/path/to/file.bmx",
+        //secret key to decrypt (or "unlock") file
+        secretKey = "YourSecretKey",
+        //cache time to live (in seconds)
+        cacheTTL = 60,
+    })
      //it will be converted to libSomeLibrary.so
     .AddTrail(new LibraryTrail("SomeLibrary"))
     //any java class can be found here
@@ -60,7 +70,10 @@ IEnumerator Start()
 ```
 
 ## Requirements
-- Android 8.0 (minimal SDK 26, Oreo O)
+- Minimal SDK 26 (Android 8.0, Oreo O)
+
+## Plugin supports
+- Perfectly works with [Beebyte Obfuscator](https://www.beebyte.co.uk/), but in some cases you should add `Bloodseeker.Runtime.dll` to array `Assemblies` in `ObfuscatorOptions.asset`
 
 ## Tested in
 - Unity 2019.4.x
