@@ -60,7 +60,7 @@ IEnumerator Start()
 ```
 
 ## Requirements
-- Android Minimal SDK 17 (Jelly Bean MR1)
+- Android 8.0 (minimal SDK 26, Oreo O)
 
 ## Tested in
 - Unity 2019.4.x
