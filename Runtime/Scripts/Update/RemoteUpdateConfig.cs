@@ -4,5 +4,6 @@
     {
         public string url;
         public string secretKey;
+        public long cacheTTL;
     }
 }

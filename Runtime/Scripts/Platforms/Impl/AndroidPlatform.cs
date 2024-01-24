@@ -84,6 +84,7 @@ namespace BloodseekerSDK
                     {
                         remoteConfigObj.Call(new SecureString("^setUrl^"), _config.url);
                         remoteConfigObj.Call(new SecureString("^setSecretKey^"), _config.secretKey);
+                        remoteConfigObj.Call(new SecureString("^setCacheTTL^"), _config.cacheTTL);
 
                         bool added = sdkObj.Call<bool>(new SecureString("^setRemoteUpdateConfig^"), remoteConfigObj);
                         if (!added)
