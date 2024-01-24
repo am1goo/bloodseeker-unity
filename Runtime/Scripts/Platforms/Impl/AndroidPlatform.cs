@@ -51,7 +51,7 @@ namespace BloodseekerSDK
             AndroidJavaObject sdkObj;
             try
             {
-                sdkObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.Bloodseeker^"));
+                sdkObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.AndroidBloodseeker^"));
             }
             catch (AndroidJavaException ex)
             {
@@ -64,7 +64,7 @@ namespace BloodseekerSDK
             AndroidJavaObject asyncReportObj;
             try
             {
-                asyncReportObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.AsyncReport^"));
+                asyncReportObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.AsyncReport^"));
             }
             catch (AndroidJavaException ex)
             {
@@ -80,7 +80,7 @@ namespace BloodseekerSDK
             {
                 if (_config != null)
                 {
-                    using (AndroidJavaObject remoteConfigObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.update.RemoteUpdateConfig^")))
+                    using (AndroidJavaObject remoteConfigObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.update.RemoteUpdateConfig^")))
                     {
                         remoteConfigObj.Call(new SecureString("^setUrl^"), _config.url);
                         remoteConfigObj.Call(new SecureString("^setSecretKey^"), _config.secretKey);
