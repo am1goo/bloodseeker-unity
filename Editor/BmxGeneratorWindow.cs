@@ -25,7 +25,10 @@ public class BmxGeneratorWindow : EditorWindow
     private TextField _pathToResultField;
     private Toggle _revealInFinderCheckbox;
     private Button _generateButton;
+    private Button _testButton;
     private Label _logs;
+
+    private bool _lastGenerateSuccess = false;
 
     [MenuItem("Bloodseeker/*.bmx generator")]
     public static void ShowWindow()
@@ -39,6 +42,8 @@ public class BmxGeneratorWindow : EditorWindow
         var prevRevealInFinder = EditorPrefs.GetBool(PP_REVEAL_IN_FINDER_AFTER_GENERATION);
         if (prevRevealInFinder != _revealInFinderCheckbox.value)
             EditorPrefs.SetBool(PP_REVEAL_IN_FINDER_AFTER_GENERATION, _revealInFinderCheckbox.value);
+
+        _testButton.SetEnabled(_lastGenerateSuccess);
 
         var generateDenied = string.IsNullOrEmpty(_pathToProjectField.value) || string.IsNullOrEmpty(_pathToResultField.value);
         var generateAllowed = !generateDenied;
@@ -76,6 +81,10 @@ public class BmxGeneratorWindow : EditorWindow
         _generateButton = new Button(OnGenerateClick);
         _generateButton.text = "Generate";
         root.Add(_generateButton);
+
+        _testButton = new Button(OnTestClick);
+        _testButton.text = "Test";
+        root.Add(_testButton);
 
         _logs = new Label("");
         root.Add(_logs);
@@ -134,6 +143,7 @@ public class BmxGeneratorWindow : EditorWindow
 
     private void OnGenerateClick()
     {
+        _lastGenerateSuccess = false;
         ClearLog();
 
         var pathToProjectFileInfo = new FileInfo(_pathToProjectField.value);
@@ -146,7 +156,7 @@ public class BmxGeneratorWindow : EditorWindow
         var pathToResultFileInfo = new FileInfo(_pathToResultField.value);
         AddLogInfo($"Prepare to save to {pathToResultFileInfo.FullName}");
 
-        var exec = Exec(pathToProjectFileInfo.DirectoryName, pathToResultFileInfo.FullName);
+        var exec = ExecGenerate(pathToProjectFileInfo.DirectoryName, pathToResultFileInfo.FullName);
         if (exec.retCode != 0)
         {
             AddLogError(exec.output);
@@ -154,13 +164,34 @@ public class BmxGeneratorWindow : EditorWindow
             return;
         }
 
+        _lastGenerateSuccess = true;
         AddLogInfo(exec.output);
         AddLogInfo("Success!");
-
+        
         if (!_revealInFinderCheckbox.value)
             return;
 
         EditorUtility.RevealInFinder(pathToResultFileInfo.FullName);
+    }
+
+    private void OnTestClick()
+    {
+        var pathToProjectFileInfo = new FileInfo(_pathToProjectField.value);
+        if (!pathToProjectFileInfo.Exists)
+        {
+            ShowDialogError($"{PROJECT_FILENAME} doesn't exists at path {pathToProjectFileInfo.FullName}");
+            return;
+        }
+
+        var bmxFileInfo = new FileInfo(_pathToResultField.value);
+        var exec = ExecTest(pathToProjectFileInfo.DirectoryName, bmxFileInfo.FullName);
+        if (exec.retCode != 0)
+        {
+            ShowDialogError(exec.output);
+            return;
+        }
+
+        ShowDialogInfo(exec.output);
     }
 
     private void ClearLog()
@@ -178,6 +209,21 @@ public class BmxGeneratorWindow : EditorWindow
         AddLog(text, "ERROR");
     }
 
+    private void ShowDialogInfo(string text)
+    {
+        ShowDialog(text, "INFO");
+    }
+
+    private void ShowDialogError(string text)
+    {
+        ShowDialog(text, "ERROR");
+    }
+
+    private void ShowDialog(string text, string prefix)
+    {
+        EditorUtility.DisplayDialog(prefix, text, "Okay");
+    }
+
     private void AddLog(string text, string prefix)
     {
         if (_logs.text.Length > 0)
@@ -186,7 +232,7 @@ public class BmxGeneratorWindow : EditorWindow
         _logs.text += $"[{prefix}] {text}";
     }
 
-    private static (int retCode, string output) Exec(string pathToProject, string pathToResult)
+    private static (int retCode, string output) ExecGenerate(string pathToProject, string pathToResult)
     {
         var toolsPath = GetToolPath();
         if (string.IsNullOrWhiteSpace(toolsPath))
@@ -194,7 +240,18 @@ public class BmxGeneratorWindow : EditorWindow
 
         var javaPath = GetJavaPath();
         var generatorPath = Path.Combine(toolsPath, "Editor/Tools/generator.jar");
-        return Exec(javaPath, "-jar", generatorPath, pathToProject, pathToResult);
+        return Exec(javaPath, "-jar", generatorPath, "-c", pathToProject, pathToResult);
+    }
+
+    private static (int retCode, string output) ExecTest(string pathToProject, string pathToBmxFile)
+    {
+        var toolsPath = GetToolPath();
+        if (string.IsNullOrWhiteSpace(toolsPath))
+            return (-1, "can't file tools path");
+
+        var javaPath = GetJavaPath();
+        var generatorPath = Path.Combine(toolsPath, "Editor/Tools/generator.jar");
+        return Exec(javaPath, "-jar", generatorPath, "-t", pathToProject, pathToBmxFile);
     }
 
     private static (int retCode, string output) Exec(string fileName, params string[] args)

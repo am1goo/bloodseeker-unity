@@ -9,7 +9,8 @@ namespace BloodseekerSDK
 {
     public class AndroidPlatform : IBloodseekerPlatform
     {
-        private RemoteUpdateConfig _config;
+        private LocalUpdateConfig _localConfig;
+        private RemoteUpdateConfig _remoteConfig;
         private List<IAndroidTrail> _trails = new List<IAndroidTrail>();
 
         public AndroidPlatform()
@@ -17,9 +18,14 @@ namespace BloodseekerSDK
 
         }
 
+        public void SetLocalUpdateConfig(LocalUpdateConfig config)
+        {
+            this._localConfig = config;
+        }
+
         public void SetRemoteUpdateConfig(RemoteUpdateConfig config)
         {
-            this._config = config;
+            this._remoteConfig = config;
         }
 
         public bool AddTrail(ITrail trail)
@@ -78,17 +84,41 @@ namespace BloodseekerSDK
 
             try
             {
-                if (_config != null)
+                if (_localConfig != null)
+                {
+                    var localConfigBytes = _localConfig.file?.bytes;
+                    if (localConfigBytes != null)
+                    {
+                        using (AndroidJavaObject localConfigObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.update.LocalUpdateConfig^")))
+                        {
+                            localConfigObj.Call(new SecureString("^setFile^"), localConfigBytes);
+                            localConfigObj.Call(new SecureString("^setSecretKey^"), _localConfig.secretKey);
+
+                            bool added = sdkObj.Call<bool>(new SecureString("^setLocalUpdateConfig^"), localConfigObj);
+                            if (!added)
+                                exceptions.Add(new Exception($"{typeof(LocalUpdateConfig)} wasn't sets"));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                exceptions.Add(ex);
+            }
+
+            try
+            {
+                if (_remoteConfig != null)
                 {
                     using (AndroidJavaObject remoteConfigObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.update.RemoteUpdateConfig^")))
                     {
-                        remoteConfigObj.Call(new SecureString("^setUrl^"), _config.url);
-                        remoteConfigObj.Call(new SecureString("^setSecretKey^"), _config.secretKey);
-                        remoteConfigObj.Call(new SecureString("^setCacheTTL^"), _config.cacheTTL);
+                        remoteConfigObj.Call(new SecureString("^setUrl^"), _remoteConfig.url);
+                        remoteConfigObj.Call(new SecureString("^setSecretKey^"), _remoteConfig.secretKey);
+                        remoteConfigObj.Call(new SecureString("^setCacheTTL^"), _remoteConfig.cacheTTL);
 
                         bool added = sdkObj.Call<bool>(new SecureString("^setRemoteUpdateConfig^"), remoteConfigObj);
                         if (!added)
-                            exceptions.Add(new Exception($"update url wasn't sets"));
+                            exceptions.Add(new Exception($"{typeof(RemoteUpdateConfig)} wasn't sets"));
                     }
                 }
             }

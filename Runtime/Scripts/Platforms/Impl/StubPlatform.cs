@@ -7,6 +7,11 @@ namespace BloodseekerSDK
     {
         private static readonly Report _report = Report.Ok();
 
+        public void SetLocalUpdateConfig(LocalUpdateConfig config)
+        {
+            //do nothing
+        }
+
         public void SetRemoteUpdateConfig(RemoteUpdateConfig config)
         {
             //do nothing

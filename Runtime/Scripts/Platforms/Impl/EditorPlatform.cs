@@ -10,6 +10,11 @@ namespace BloodseekerSDK
     public class EditorPlatform : IBloodseekerPlatform
     {
         private List<IEditorTrail> _trails;
+        
+        public void SetLocalUpdateConfig(LocalUpdateConfig config)
+        {
+            //do nothing
+        }
 
         public void SetRemoteUpdateConfig(RemoteUpdateConfig config)
         {

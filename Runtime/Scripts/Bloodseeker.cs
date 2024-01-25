@@ -23,6 +23,12 @@ namespace BloodseekerSDK
             return new Bloodseeker();
         }
 
+        public Bloodseeker SetLocalUpdateConfig(LocalUpdateConfig config)
+        {
+            _platform.SetLocalUpdateConfig(config);
+            return this;
+        }
+
         public Bloodseeker SetRemoteUpdateConfig(RemoteUpdateConfig config)
         {
             _platform.SetRemoteUpdateConfig(config);
