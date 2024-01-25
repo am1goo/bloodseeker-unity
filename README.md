@@ -8,19 +8,28 @@ Beware of cheaters!
 
 #### Unity Plugin
 The latest version can be installed via [package manager](https://docs.unity3d.com/Manual/upm-ui-giturl.html) using following git URL: \
-`https://github.com/am1goo/bloodseeker-unity.git#0.1.5`
+`https://github.com/am1goo/bloodseeker-unity.git#0.2.0`
 
 #### How to use
 ```csharp
 using BloodseekerSDK;
 using BloodseekerSDK.Android;
 
+[SerializeField]
+private TextAsset _localUpdateFile;
+
 IEnumerator Start()
 {
     var op = Bloodseeker
     //create instance of Bloodseeker
     .Create()
-    //if you want to update trails from your remote server, you should configure it first
+    //use local encrypted and pre-configured file with actual trails
+    .SetLocalUpdateConfig(new LocalUpdateConfig
+    {
+        file = new LocalUpdateConfig.TextAssetFile(_localUpdateFile),
+        secretKey = "YourSecretKey",
+    })
+    //or download and update trails from your remote server
     .SetRemoteUpdateConfig(new RemoteUpdateConfig
     {
         //url where sdk have access to file with update
