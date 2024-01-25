@@ -116,6 +116,18 @@ namespace BloodseekerSDK
                         remoteConfigObj.Call(new SecureString("^setSecretKey^"), _remoteConfig.secretKey);
                         remoteConfigObj.Call(new SecureString("^setCacheTTL^"), _remoteConfig.cacheTTL);
 
+                        if (_remoteConfig.keystore != null)
+                        {
+                            var keystore = _remoteConfig.keystore;
+                            using (AndroidJavaObject keystoreObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.update.RemoteUpdateConfig$Keystore^")))
+                            {
+                                keystoreObj.Call(new SecureString("^setCert^"), keystore.cert.bytes);
+                                keystoreObj.Call(new SecureString("^setPwd^"), keystore.pwd);
+
+                                remoteConfigObj.Call(new SecureString("^setKeystore^"), keystoreObj);
+                            }
+                        }
+
                         bool added = sdkObj.Call<bool>(new SecureString("^setRemoteUpdateConfig^"), remoteConfigObj);
                         if (!added)
                             exceptions.Add(new Exception($"{typeof(RemoteUpdateConfig)} wasn't sets"));
