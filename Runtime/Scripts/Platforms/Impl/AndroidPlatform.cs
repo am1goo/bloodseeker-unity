@@ -2,6 +2,7 @@
 using BloodseekerSDK.Android;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -195,17 +196,23 @@ namespace BloodseekerSDK
                 {
                     var exceptionObj = asyncReportObj.Call<AndroidJavaObject>(new SecureString("^getException^"));
                     var exceptionStr = exceptionObj.Call<string>(new SecureString("^toString^"));
-                    var exception = new Exception(exceptionStr);
-                    report = Report.UnexpectedError(exception);
+                    exceptions.Add(new Exception(exceptionStr));
+                    report = Report.UnexpectedError(exceptions);
                 }
                 else
                 {
                     var isSuccess = resultObj.Call<bool>(new SecureString("^isSuccess^"));
                     var evidence = resultObj.CallArray(new SecureString("^getEvidence^"));
                     var errors = resultObj.CallArray(new SecureString("^getErrors^"));
-
+                    
                     var result = isSuccess ? Report.Result.Found : Report.Result.Ok;
-                    report = new Report(result, evidence, errors);
+
+                    var errorsExceptions = exceptions.Select(x => x.ToString()).ToArray();
+                    var errorsTotal = new string[errorsExceptions.Length + errors.Length];
+                    errorsExceptions.CopyTo(errorsTotal, 0);
+                    errors.CopyTo(errorsTotal, errorsExceptions.Length);
+
+                    report = new Report(result, evidence, errorsTotal);
                 }
             }
 

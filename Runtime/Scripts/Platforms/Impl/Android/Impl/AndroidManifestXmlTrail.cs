@@ -1,6 +1,5 @@
 ﻿#if UNITY_ANDROID
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace BloodseekerSDK.Android
@@ -16,8 +15,22 @@ namespace BloodseekerSDK.Android
 
         public AndroidJavaObject AsJavaObject()
         {
-            var strs = _lookers.Select(looker => JsonUtility.ToJson(looker)).ToArray();
-            return new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.trails.AndroidManifestXmlTrail^"), strs);
+            AndroidJavaObject[] lookerObjs = new AndroidJavaObject[_lookers.Length];
+            for (int i = 0; i < lookerObjs.Length; ++i)
+            {
+                Looker looker = _lookers[i];
+                AndroidJavaObject lookerObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.trails.AndroidManifestXmlTrail$Looker^"));
+                lookerObj.Call(new SecureString("^setNodes^"), looker.nodes);
+                lookerObj.Call(new SecureString("^setAttribute^"), looker.attribute);
+                lookerObj.Call(new SecureString("^setValue^"), looker.value);
+                lookerObjs[i] = lookerObj;
+            }
+            var result = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.trails.AndroidManifestXmlTrail^"), lookerObjs);
+            for (int i = 0; i < lookerObjs.Length; ++i)
+            {
+                lookerObjs[i].Dispose();
+            }
+            return result;
         }
 
         [Serializable]

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BloodseekerSDK
 {
@@ -17,18 +19,28 @@ namespace BloodseekerSDK
 
         public static Report NotInitialized()
         {
-            return NotInitialized(null);
+            return NotInitialized((Exception)null);
         }
 
         public static Report NotInitialized(Exception exception)
         {
-            var errors = exception != null ? new string[] { exception.ToString() } : null;
+            return NotInitialized(new Exception[] { exception });
+        }
+
+        public static Report NotInitialized(IEnumerable<Exception> exceptions)
+        {
+            var errors = exceptions?.Select(x => x.ToString()).ToArray() ?? null;
             return new Report(Result.NotInitialized, null, errors);
         }
 
         public static Report UnexpectedError(Exception exception)
         {
-            var errors = exception != null ? new string[] { exception.ToString() } : null;
+            return UnexpectedError(new Exception[] { exception });
+        }
+
+        public static Report UnexpectedError(IEnumerable<Exception> exceptions)
+        {
+            var errors = exceptions.Select(x => x.ToString()).ToArray();
             return new Report(Result.UnexpectedError, null, errors);
         }
 
