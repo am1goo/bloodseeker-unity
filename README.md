@@ -2,6 +2,10 @@
 Easy-as-dumb toolkit to prevent any malicious injections in your `Android` apps \
 Beware of cheaters!
 
+## Features
+- search of abnormal files, packages, libraries and even values in `AndroidManifest.xml`
+- delivery of information about newest threats to users from your own server (via secured and encrypted remote update)
+
 #### What inside
 - .NET wrapper for Unity
 - [bloodseeker-android](https://github.com/am1goo/bloodseeker-android) implementation as `.aar` library
