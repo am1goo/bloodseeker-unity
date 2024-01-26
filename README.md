@@ -30,7 +30,7 @@ IEnumerator Start()
     //use local encrypted and pre-configured file with actual trails
     .SetLocalUpdateConfig(new LocalUpdateConfig
     {
-        file = new LocalUpdateConfig.TextAssetFile(_localUpdateFile),
+        file = new TextAssetFile(_localUpdateFile),
         secretKey = "YourSecretKey",
     })
     //or download and update trails from your remote server
