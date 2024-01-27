@@ -6,7 +6,7 @@ Beware of cheaters!
 - search of abnormal files, packages, libraries and even values in `AndroidManifest.xml`
 - delivery of information about newest threats to users from your own server (via secured and encrypted remote update)
 
-#### What inside
+## What's inside?
 - .NET wrapper for Unity
 - [bloodseeker-android](https://github.com/am1goo/bloodseeker-android) implementation as `.aar` library
 
@@ -81,6 +81,9 @@ IEnumerator Start()
     }
 }
 ```
+
+## What's next?
+- [ ] Redesign of `AndroidManifestXmlTrail` (more flexibility and functionality), serialization support
 
 ## Requirements
 - Minimal SDK 26 (Android 8.0, Oreo O)
