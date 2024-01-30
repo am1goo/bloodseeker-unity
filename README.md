@@ -13,7 +13,7 @@ Beware of cheaters!
 
 #### Unity Plugin
 The latest version can be installed via [package manager](https://docs.unity3d.com/Manual/upm-ui-giturl.html) using following git URL: \
-`https://github.com/am1goo/bloodseeker-unity.git#0.2.2`
+`https://github.com/am1goo/bloodseeker-unity.git#0.2.3`
 
 #### How to use
 ```csharp
