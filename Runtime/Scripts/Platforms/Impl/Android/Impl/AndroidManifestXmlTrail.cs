@@ -15,20 +15,15 @@ namespace BloodseekerSDK.Android
 
         public AndroidJavaObject AsJavaObject()
         {
-            AndroidJavaObject[] lookerObjs = new AndroidJavaObject[_lookers.Length];
-            for (int i = 0; i < lookerObjs.Length; ++i)
+            AndroidJavaObject[] lookers = new AndroidJavaObject[_lookers.Length];
+            for (int i = 0; i < lookers.Length; ++i)
             {
-                Looker looker = _lookers[i];
-                AndroidJavaObject lookerObj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.trails.AndroidManifestXmlTrail$Looker^"));
-                lookerObj.Call(new SecureString("^setNodes^"), looker.nodes);
-                lookerObj.Call(new SecureString("^setAttribute^"), looker.attribute);
-                lookerObj.Call(new SecureString("^setValue^"), looker.value);
-                lookerObjs[i] = lookerObj;
+                lookers[i] = _lookers[i].AsJavaObject();
             }
-            var result = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.trails.AndroidManifestXmlTrail^"), lookerObjs);
-            for (int i = 0; i < lookerObjs.Length; ++i)
+            var result = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.trails.AndroidManifestXmlTrail^"), lookers);
+            for (int i = 0; i < lookers.Length; ++i)
             {
-                lookerObjs[i].Dispose();
+                lookers[i].Dispose();
             }
             return result;
         }
@@ -36,15 +31,24 @@ namespace BloodseekerSDK.Android
         [Serializable]
         public class Looker
         {
-            public string[] nodes;
-            public string attribute;
-            public string value;
+            private string[] _nodes;
+            private string _attribute;
+            private string _value;
 
             public Looker(string[] nodes, string attribute, string value)
             {
-                this.nodes = nodes;
-                this.attribute = attribute;
-                this.value = value;
+                this._nodes = nodes;
+                this._attribute = attribute;
+                this._value = value;
+            }
+
+            public AndroidJavaObject AsJavaObject()
+            {
+                AndroidJavaObject obj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.trails.AndroidManifestXmlTrail$Looker^"));
+                obj.Call(new SecureString("^setNodes^"), _nodes);
+                obj.Call(new SecureString("^setAttribute^"), _attribute);
+                obj.Call(new SecureString("^setValue^"), _value);
+                return obj;
             }
 
             public static Looker UnityPlayerActivity()
