@@ -4,6 +4,7 @@ Beware of cheaters!
 
 ## Features
 - search of abnormal files, packages, libraries and even values in `AndroidManifest.xml`
+- apk or files checksum validation
 - delivery of information about newest threats to users from your own server (via secured and encrypted remote update)
 
 ## What's inside?
