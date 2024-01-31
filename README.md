@@ -1,3 +1,5 @@
+<a href="https://openupm.com/packages/com.am1goo.bloodseeker/"><img src="https://img.shields.io/npm/v/com.am1goo.bloodseeker?label=openupm&amp;registry_uri=https://package.openupm.com" /></a>
+
 # Bloodseeker for Unity
 Easy-as-dumb toolkit to prevent any malicious injections in your `Android` apps \
 Beware of cheaters!
@@ -12,8 +14,13 @@ Beware of cheaters!
 - [bloodseeker-android](https://github.com/am1goo/bloodseeker-android) implementation as `.aar` library
 
 #### Unity Plugin
+##### via Unity Package Manager
 The latest version can be installed via [package manager](https://docs.unity3d.com/Manual/upm-ui-giturl.html) using following git URL: \
 `https://github.com/am1goo/bloodseeker-unity.git#0.2.5`
+
+##### via OpenUPM
+The latest version can be installed via using following URL: \
+https://openupm.com/packages/com.am1goo.bloodseeker
 
 #### How to use
 ```csharp
