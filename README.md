@@ -16,7 +16,7 @@ Beware of cheaters!
 #### Unity Plugin
 ##### via Unity Package Manager
 The latest version can be installed via [package manager](https://docs.unity3d.com/Manual/upm-ui-giturl.html) using following git URL: \
-`https://github.com/am1goo/bloodseeker-unity.git#0.2.5`
+`https://github.com/am1goo/bloodseeker-unity.git#0.2.6`
 
 ##### via OpenUPM
 The latest version can be installed via using following URL: \
@@ -94,7 +94,7 @@ IEnumerator Start()
 - [ ] Redesign of `AndroidManifestXmlTrail` (more flexibility and functionality), serialization support
 
 ## Requirements
-- Minimal SDK 26 (Android 8.0, Oreo O)
+- Minimal SDK 19 (Android 4.4, KitKat)
 
 ## Plugin supports
 - Perfectly works with [Beebyte Obfuscator](https://www.beebyte.co.uk/), but in some cases you should add `Bloodseeker.Runtime.dll` to array `Assemblies` in `ObfuscatorOptions.asset`
