@@ -14,14 +14,14 @@ namespace BloodseekerSDK.Android
 
         public AndroidJavaObject AsJavaObject()
         {
-            AndroidJavaArray filesInApk = new AndroidJavaArray(_filesInApk.Length, new SecureString("^com.am1goo.bloodseeker.android.trails.FileIntegrityTrail$FileInApk^"));
-            for (int i = 0; i < filesInApk.length; ++i)
+            using (var filesInApk = new AndroidJavaArray(_filesInApk.Length, new SecureString("^com.am1goo.bloodseeker.android.trails.FileIntegrityTrail$FileInApk^")))
             {
-                filesInApk[i] = _filesInApk[i].AsJavaObject();
+                for (int i = 0; i < filesInApk.length; ++i)
+                {
+                    filesInApk[i] = _filesInApk[i].AsJavaObject();
+                }
+                return new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.trails.FileIntegrityTrail^"), filesInApk.AsJavaObject());
             }
-            var obj = new AndroidJavaObject(new SecureString("^com.am1goo.bloodseeker.android.trails.FileIntegrityTrail^"), filesInApk.AsJavaObject());
-            filesInApk.Dispose();
-            return obj;
         }
 
         public class File
