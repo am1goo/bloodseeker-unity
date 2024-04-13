@@ -5,7 +5,7 @@
     "description": "Easy-as-dumb toolkit to prevent any malicious injections in your Android apps. Beware of cheaters!",
     "unity": "2020.3",
     "license": "MIT",
-    "licensesUrl": "https://raw.githubusercontent.com/am1goo/bloodseeker-unity/main/LICENSE?token=GHSAT0AAAAAACMRDQHMQMJ4ECX6XJV3I2FCZNKZ3QA",
+    "licensesUrl": "https://raw.githubusercontent.com/am1goo/bloodseeker-unity/main/LICENSE",
     "documentationUrl": "https://github.com/am1goo/bloodseeker-unity/blob/master/README.md",
     "keywords": [
         "anticheat",
