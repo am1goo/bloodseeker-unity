@@ -1,10 +1,10 @@
 {
     "name": "com.am1goo.bloodseeker",
-    "version": "0.2.7",
+    "version": "0.2.8",
     "displayName": "Bloodseeker",
     "description": "Easy-as-dumb toolkit to prevent any malicious injections in your Android apps. Beware of cheaters!",
     "unity": "2020.3",
-    "license": "GPL-3.0-or-later",
+    "license": "MIT",
     "licensesUrl": "https://raw.githubusercontent.com/am1goo/bloodseeker-unity/main/LICENSE?token=GHSAT0AAAAAACMRDQHMQMJ4ECX6XJV3I2FCZNKZ3QA",
     "documentationUrl": "https://github.com/am1goo/bloodseeker-unity/blob/master/README.md",
     "keywords": [
